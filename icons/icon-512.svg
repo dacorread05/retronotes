@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo teal de Windows 95 (área segura para maskable) -->
+  <rect width="512" height="512" fill="#008080"/>
+  <!-- Sombra del bloc -->
+  <rect x="128" y="68" width="264" height="364" fill="#404040" rx="4"/>
+  <!-- Cuerpo del bloc de notas -->
+  <rect x="124" y="64" width="264" height="364" fill="#fffde8" stroke="#000" stroke-width="6"/>
+  <!-- Encabezado azul -->
+  <rect x="124" y="64" width="264" height="64" fill="#5b5ba8"/>
+  <!-- Texto en encabezado -->
+  <rect x="144" y="84" width="112" height="10" fill="#ffffff" opacity="0.8"/>
+  <rect x="264" y="84" width="56" height="10" fill="#ffffff" opacity="0.4"/>
+  <rect x="144" y="100" width="80" height="8" fill="#ffffff" opacity="0.4"/>
+  <!-- Líneas del papel -->
+  <line x1="148" y1="168" x2="364" y2="168" stroke="#c0c0c0" stroke-width="3"/>
+  <line x1="148" y1="200" x2="364" y2="200" stroke="#c0c0c0" stroke-width="3"/>
+  <line x1="148" y1="232" x2="364" y2="232" stroke="#c0c0c0" stroke-width="3"/>
+  <line x1="148" y1="264" x2="364" y2="264" stroke="#c0c0c0" stroke-width="3"/>
+  <line x1="148" y1="296" x2="320" y2="296" stroke="#c0c0c0" stroke-width="3"/>
+  <line x1="148" y1="328" x2="296" y2="328" stroke="#c0c0c0" stroke-width="3"/>
+  <!-- Contenido de texto simulado -->
+  <rect x="148" y="156" width="144" height="16" fill="#333" opacity="0.65"/>
+  <rect x="148" y="188" width="196" height="16" fill="#333" opacity="0.45"/>
+  <rect x="148" y="220" width="120" height="16" fill="#333" opacity="0.35"/>
+  <rect x="148" y="252" width="168" height="16" fill="#333" opacity="0.45"/>
+  <rect x="148" y="284" width="96" height="16" fill="#333" opacity="0.30"/>
+  <rect x="148" y="316" width="140" height="16" fill="#333" opacity="0.40"/>
+  <!-- Espirales del bloc -->
+  <circle cx="122" cy="96"  r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="140" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="184" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="228" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="272" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="316" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <circle cx="122" cy="360" r="10" fill="#808080" stroke="#404040" stroke-width="2"/>
+  <!-- Lápiz en la esquina -->
+  <g transform="rotate(-45, 360, 380)">
+    <rect x="348" y="360" width="14" height="48" fill="#ffcc00" stroke="#cc9900" stroke-width="1"/>
+    <polygon points="348,408 362,408 355,428" fill="#ffaa00"/>
+    <polygon points="350,424 360,424 355,432" fill="#333"/>
+    <rect x="348" y="356" width="14" height="8" fill="#ff6666"/>
+  </g>
+</svg>
