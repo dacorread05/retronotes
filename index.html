@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tu bloc de notas personal con estilo retro Windows 95">
+  <meta name="theme-color" content="#000080">
+  <title>RetroNotes — Tu Bloc de Notas Personal</title>
+
+  <!-- PWA: manifest e iconos -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+<!-- =====================================================
+     APP PRINCIPAL
+     ===================================================== -->
+<div class="window raised"
+     id="mainWindow"
+     role="main"
+     aria-label="RetroNotes">
+
+  <!-- Barra de título -->
+  <div class="window-title" id="titleBar">
+    <svg class="title-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <rect x="2" y="1" width="11" height="13" fill="#fffde8" stroke="#000" stroke-width="1"/>
+      <rect x="2" y="1" width="11" height="3"  fill="#5b5ba8"/>
+      <line x1="4" y1="6" x2="11" y2="6" stroke="#999" stroke-width="0.5"/>
+      <line x1="4" y1="8" x2="11" y2="8" stroke="#999" stroke-width="0.5"/>
+      <line x1="4" y1="10" x2="9" y2="10" stroke="#999" stroke-width="0.5"/>
+    </svg>
+    <span id="windowTitle">RetroNotes — Sin título</span>
+  </div><!-- /window-title -->
+
+  <!-- Barra de menú -->
+  <nav class="menu-bar" role="menubar" aria-label="Menú principal">
+
+    <!-- Menú Archivo -->
+    <div class="menu-item" role="menuitem" tabindex="0"
+         aria-haspopup="true" aria-label="Archivo">
+      <span class="underline">A</span>rchivo
+      <div class="menu-dropdown raised" role="menu" aria-label="Menú Archivo">
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.newNote()">
+          <span><span class="underline">N</span>uevo</span>
+          <span class="dropdown-shortcut">Ctrl+N</span>
+        </div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.saveNote()">
+          <span><span class="underline">G</span>uardar</span>
+          <span class="dropdown-shortcut">Ctrl+S</span>
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.downloadNote()">
+          <span><span class="underline">D</span>escargar como .txt</span>
+          <span class="dropdown-shortcut">Ctrl+D</span>
+        </div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.exportAllAsZip()">
+          <span>Exportar todas como .zip</span>
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.importarTxt()">
+          <span>Importar archivo .txt...</span>
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.exportarBackup()">
+          <span>Exportar backup JSON...</span>
+        </div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.importarBackup()">
+          <span>Importar backup JSON...</span>
+        </div>
+      </div>
+    </div><!-- /Archivo -->
+
+    <!-- Menú Edición -->
+    <div class="menu-item" role="menuitem" tabindex="0"
+         aria-haspopup="true" aria-label="Edición">
+      <span class="underline">E</span>dición
+      <div class="menu-dropdown raised" role="menu" aria-label="Menú Edición">
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="document.execCommand('undo')">
+          <span>Deshacer</span>
+          <span class="dropdown-shortcut">Ctrl+Z</span>
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="document.execCommand('cut')">
+          <span>Cortar</span>
+          <span class="dropdown-shortcut">Ctrl+X</span>
+        </div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="document.execCommand('copy')">
+          <span>Copiar</span>
+          <span class="dropdown-shortcut">Ctrl+C</span>
+        </div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="document.execCommand('paste')">
+          <span>Pegar</span>
+          <span class="dropdown-shortcut">Ctrl+V</span>
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.selectAll()">
+          <span>Seleccionar todo</span>
+          <span class="dropdown-shortcut">Ctrl+A</span>
+        </div>
+      </div>
+    </div><!-- /Edición -->
+
+    <!-- Menú Ver -->
+    <div class="menu-item" role="menuitem" tabindex="0"
+         aria-haspopup="true" aria-label="Ver">
+      <span class="underline">V</span>er
+      <div class="menu-dropdown raised" role="menu" aria-label="Menú Ver">
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.toggleSidebar()">
+          Panel de notas
+        </div>
+        <div class="separator" role="separator"></div>
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.toggleWordWrap()">
+          Ajuste de línea
+        </div>
+      </div>
+    </div><!-- /Ver -->
+
+    <!-- Menú Ayuda -->
+    <div class="menu-item" role="menuitem" tabindex="0"
+         aria-haspopup="true" aria-label="Ayuda">
+      Ay<span class="underline">u</span>da
+      <div class="menu-dropdown raised" role="menu" aria-label="Menú Ayuda">
+        <div class="dropdown-item" role="menuitem" tabindex="-1"
+             onclick="App.showAbout()">
+          Acerca de RetroNotes...
+        </div>
+      </div>
+    </div><!-- /Ayuda -->
+
+  </nav><!-- /menu-bar -->
+
+  <!-- Barra de herramientas móvil (solo en pantallas pequeñas) -->
+  <div class="mobile-toolbar" role="toolbar" aria-label="Barra de herramientas">
+    <button class="hamburger-btn raised"
+            onclick="App.toggleSidebar()"
+            aria-label="Mostrar panel de notas"
+            aria-expanded="false"
+            id="hamburgerBtn">
+      ☰ Notas
+    </button>
+    <span class="mobile-note-title" id="mobileTitleText" aria-live="polite"></span>
+  </div>
+
+  <!-- Área de contenido principal: sidebar + editor -->
+  <div style="flex:1; display:flex; overflow:hidden;" role="main">
+
+    <!-- Panel lateral de notas -->
+    <aside class="sidebar sunken" id="sidebar"
+           role="complementary" aria-label="Panel de notas">
+
+      <div class="sidebar-title">
+        📋 Mis Notas
+      </div>
+
+      <!-- Campo de búsqueda (estilo Win95) -->
+      <input type="search"
+             id="searchInput"
+             class="search-box"
+             placeholder="🔍 Buscar notas..."
+             aria-label="Buscar en tus notas"
+             autocomplete="off"
+             spellcheck="false">
+
+      <!-- Lista de notas -->
+      <div class="notes-list"
+           id="notesList"
+           role="listbox"
+           aria-label="Lista de notas"
+           aria-multiselectable="false">
+        <!-- Las notas se renderizan dinámicamente por notes.js -->
+      </div>
+
+      <!-- Botón nueva nota -->
+      <button class="new-note-btn raised"
+              onclick="App.newNote()"
+              aria-label="Crear nueva nota">
+        📝 Nueva Nota
+      </button>
+
+    </aside><!-- /sidebar -->
+
+    <!-- Editor de texto -->
+    <div class="editor-container sunken" role="region" aria-label="Editor de notas">
+      <textarea class="editor"
+                id="editor"
+                placeholder="Escribe aquí tu nota..."
+                spellcheck="true"
+                aria-label="Editor de notas — escribe aquí"
+                aria-multiline="true"></textarea>
+    </div>
+
+  </div><!-- /contenido principal -->
+
+  <!-- Barra de estado -->
+  <footer class="status-bar" role="status" aria-live="polite" aria-label="Barra de estado">
+    <div class="status-section sunken" id="statusText">Listo</div>
+    <div class="status-section sunken" id="statusPos">Ln 1, Col 1</div>
+    <div class="status-section sunken" id="statusChars">0 car · 0 pal</div>
+    <div class="status-section sunken" id="statusModified"></div>
+  </footer>
+
+</div><!-- /mainWindow -->
+
+<!-- Overlay del sidebar en móvil -->
+<div class="sidebar-overlay"
+     id="sidebarOverlay"
+     onclick="App.closeMobileSidebar()"
+     aria-hidden="true"></div>
+
+<!-- =====================================================
+     DIÁLOGOS
+     ===================================================== -->
+
+<!-- Diálogo "Acerca de" -->
+<div class="dialog-overlay" id="aboutDialog"
+     role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+  <div class="dialog raised">
+    <div class="window-title">
+      <span id="aboutTitle">Acerca de RetroNotes</span>
+      <div class="title-buttons">
+        <button class="title-btn raised" onclick="App.hideAbout()" aria-label="Cerrar">✕</button>
+      </div>
+    </div>
+    <div class="dialog-body">
+      <div class="dialog-icon" aria-hidden="true">📝</div>
+      <div>
+        <strong style="font-family:'Pixelify Sans',monospace; font-size:16px;">RetroNotes v1.0</strong><br><br>
+        Tu bloc de notas personal con<br>
+        estilo retro Windows 95.<br><br>
+        <span style="color:#808080;">
+          PWA • Funciona 100% offline<br>
+          Tus notas, tu privacidad.<br>
+          Sin servidores, sin cuentas.
+        </span>
+      </div>
+    </div>
+    <div class="dialog-buttons">
+      <button class="dialog-btn raised" id="aboutBtnOk"
+              onclick="App.hideAbout()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Diálogo de confirmación para eliminar nota -->
+<div class="dialog-overlay" id="deleteConfirmDialog"
+     role="alertdialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteConfirmMsg">
+  <div class="dialog raised">
+    <div class="window-title">
+      <span id="deleteTitle">Confirmar eliminación</span>
+      <div class="title-buttons">
+        <button class="title-btn raised" onclick="App.cancelDeleteNote()" aria-label="Cerrar">✕</button>
+      </div>
+    </div>
+    <div class="dialog-body">
+      <div class="dialog-icon" aria-hidden="true">⚠️</div>
+      <div id="deleteConfirmMsg" style="font-size:12px; line-height:1.6;">
+        ¿Está seguro que desea eliminar esta nota?
+      </div>
+    </div>
+    <div class="dialog-buttons">
+      <button class="dialog-btn raised"
+              onclick="App.confirmDeleteNote()"
+              aria-label="Sí, eliminar nota">Sí</button>
+      <button class="dialog-btn raised"
+              id="deleteBtnNo"
+              onclick="App.cancelDeleteNote()"
+              aria-label="No, cancelar">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- Diálogo de advertencia de almacenamiento lleno -->
+<div class="dialog-overlay" id="storageWarningDialog"
+     role="alertdialog" aria-modal="true" aria-labelledby="storageTitle">
+  <div class="dialog raised">
+    <div class="window-title">
+      <span id="storageTitle">Almacenamiento lleno</span>
+      <div class="title-buttons">
+        <button class="title-btn raised" onclick="App.hideStorageWarning()" aria-label="Cerrar">✕</button>
+      </div>
+    </div>
+    <div class="dialog-body">
+      <div class="dialog-icon" aria-hidden="true">⚠️</div>
+      <div style="font-size:12px; line-height:1.6;">
+        El almacenamiento local está lleno.<br>
+        No se pueden guardar más notas.<br><br>
+        <strong>Sugerencia:</strong> Exporta un backup<br>
+        y elimina notas antiguas para liberar espacio.
+      </div>
+    </div>
+    <div class="dialog-buttons">
+      <button class="dialog-btn raised"
+              onclick="App.exportarBackup(); App.hideStorageWarning()">
+        Exportar backup
+      </button>
+      <button class="dialog-btn raised"
+              onclick="App.hideStorageWarning()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MENÚ CONTEXTUAL (clic derecho en el editor)
+     ===================================================== -->
+<div class="context-menu raised" id="contextMenu"
+     role="menu" aria-label="Menú contextual">
+  <div class="dropdown-item" role="menuitem" onclick="document.execCommand('cut')">Cortar</div>
+  <div class="dropdown-item" role="menuitem" onclick="document.execCommand('copy')">Copiar</div>
+  <div class="dropdown-item" role="menuitem" onclick="document.execCommand('paste')">Pegar</div>
+  <div class="separator" role="separator"></div>
+  <div class="dropdown-item" role="menuitem" onclick="App.selectAll()">Seleccionar todo</div>
+</div>
+
+<!-- =====================================================
+     INPUTS OCULTOS para importar archivos
+     ===================================================== -->
+<input type="file"
+       id="importTxtInput"
+       accept=".txt,text/plain"
+       style="display:none"
+       aria-hidden="true">
+<input type="file"
+       id="importBackupInput"
+       accept=".json,application/json"
+       style="display:none"
+       aria-hidden="true">
+
+<!-- =====================================================
+     MÓDULOS JAVASCRIPT (orden importante)
+     app.js debe cargarse primero para definir el espacio de nombres App.
+     Los demás módulos extienden App con Object.assign.
+     ===================================================== -->
+<script src="./js/app.js"></script>
+<script src="./js/notes.js"></script>
+<script src="./js/editor.js"></script>
+<script src="./js/ui.js"></script>
+
+</body>
+</html>
